@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Game;
+use App\Role;
 use App\Player;
+use App\Position;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -38,17 +40,58 @@ class ModController extends Controller
             'moderator_id' => Auth::id()
         ]);
 
+        $rolesToAdd = Role::whereIn('name', ['Clairvoyant', 'Alpha Wolf'])->pluck('id');
+        foreach ($rolesToAdd as $role) {
+            Position::create([
+                'game_id' => $new->id,
+                'role_id' => $role
+            ]);
+        }
+
         return redirect("/game/$new->id");
     }
 
     public function setupGame(Game $game)
     {
-        $players = Player::where('game_id', $game->id)->get();
+        // $players = Player::where('game_id', $game->id)->get();
+        // // $factions = \App\Faction::with(['roles' => function($roles) {
+        // //                             $roles->orderBy('r_order');
+        // //                         }])
+        // //                         ->orderBy('f_order')
+        // //                         ->get();
+
+        // // $alreadyIn = Position::where('game_id', $game->id)
+        // //                      ->pluck('role_id');
+
+        $this->getGameSetupData($game);
+
         return view('mod.build');
     }
 
     public function getPlayers(Game $game)
     {
         return Player::where('game_id', $game->id)->pluck('name');
+    }
+
+    public function getGameSetupData(Game $game) {
+        $factions = \App\Faction::with(['roles' => function($roles) {
+                                    $roles->orderBy('r_order');
+                                }])
+                                ->orderBy('f_order')
+                                ->get();
+
+        $alreadyIn = Position::where('game_id', $game->id)
+                             ->pluck('role_id')->toArray();
+
+        foreach ($factions as $faction) {
+            foreach($faction->roles as $role) {
+                $role->already_in = 0;
+                if (in_array($role->id, $alreadyIn)) {
+                    $role->already_in = 1;
+                }
+            }
+        }
+
+        return $factions;
     }
 }

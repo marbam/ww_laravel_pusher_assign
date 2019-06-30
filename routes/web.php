@@ -25,6 +25,7 @@ Route::middleware(['approved'])->group(function () {
     Route::post('/setup_game', 'ModController@submitGame');
     Route::get('/game/{game}', 'ModController@setupGame');
     Route::get('/get_players/{game}', 'ModController@getPlayers');
+    Route::get('/get_factions/{game}', 'ModController@getGameSetupData');
 });
 
 Route::get('/join', 'PlayerController@join');
