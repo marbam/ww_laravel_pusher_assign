@@ -15,11 +15,13 @@ class ModController extends Controller
     public function gamesList()
     {
         $twentyFourHours = Carbon::now()->subHours(24);
+        Position::where('created_at', '<', $twentyFourHours)->delete();
         Game::where('created_at', '<', $twentyFourHours)->delete();
 
         $games = Game::where('moderator_id', Auth::id())
                      ->orderBy('created_at', 'DESC')
                      ->get();
+
 
         return view('mod.games', ['games' => $games]);
     }
@@ -53,19 +55,8 @@ class ModController extends Controller
 
     public function setupGame(Game $game)
     {
-        // $players = Player::where('game_id', $game->id)->get();
-        // // $factions = \App\Faction::with(['roles' => function($roles) {
-        // //                             $roles->orderBy('r_order');
-        // //                         }])
-        // //                         ->orderBy('f_order')
-        // //                         ->get();
-
-        // // $alreadyIn = Position::where('game_id', $game->id)
-        // //                      ->pluck('role_id');
-
-        $this->getGameSetupData($game);
-
-        return view('mod.build');
+        $gameData = $this->getGameSetupData($game);
+        return view('mod.build', ['id' => $game->id, 'data' => $gameData]);
     }
 
     public function getPlayers(Game $game)
