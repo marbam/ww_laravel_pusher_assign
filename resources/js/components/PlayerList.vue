@@ -1,8 +1,11 @@
 <template>
-    <div>
-        <ul>
-            <li v-for="player in players" v-text="player"></li>
-        </ul>
+    <div class="players">
+        <h1>Players in game</h1>
+        <div>
+            <ul>
+                <li v-for="player in players" v-text="player"></li>
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -10,14 +13,16 @@
     export default {
         data() {
             return {
-                players: []
+                players: ['None']
             }
         },
         created() {
 
            axios.get('/get_players/1', [])
                 .then(res => {
-                    this.players = res.data;  
+                    if(res.data.length > 1) {
+                        this.players = res.data;
+                    }
                 }).catch(err => {
                 console.log(err)
             })
