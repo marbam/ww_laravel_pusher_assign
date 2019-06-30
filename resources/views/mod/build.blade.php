@@ -11,8 +11,8 @@
     <body>
     	<div id="app">
     		<player-list></player-list>
+            <faction-list></faction-list>
     	</div>
-
     </body>
 	<script src="/js/app.js"></script>
 
