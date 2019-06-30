@@ -1771,17 +1771,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      players: []
+      players: ['None']
     };
   },
   created: function created() {
     var _this = this;
 
     axios.get('/get_players/1', []).then(function (res) {
-      _this.players = res.data;
+      if (res.data.length > 1) {
+        _this.players = res.data;
+      }
     })["catch"](function (err) {
       console.log(err);
     });
@@ -47241,14 +47246,18 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "ul",
-      _vm._l(_vm.players, function(player) {
-        return _c("li", { domProps: { textContent: _vm._s(player) } })
-      }),
-      0
-    )
+  return _c("div", { staticClass: "players" }, [
+    _c("h1", [_vm._v("Players in game")]),
+    _vm._v(" "),
+    _c("div", [
+      _c(
+        "ul",
+        _vm._l(_vm.players, function(player) {
+          return _c("li", { domProps: { textContent: _vm._s(player) } })
+        }),
+        0
+      )
+    ])
   ])
 }
 var staticRenderFns = []
