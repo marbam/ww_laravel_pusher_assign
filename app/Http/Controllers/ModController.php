@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Game;
 use App\Role;
+use App\Maybe;
 use App\Player;
+use App\Faction;
 use App\Position;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -74,15 +76,77 @@ class ModController extends Controller
         $alreadyIn = Position::where('game_id', $game->id)
                              ->pluck('role_id')->toArray();
 
+        $maybeIn = Maybe::where('game_id', $game->id)
+                             ->pluck('faction_id')->toArray();
+
+
         foreach ($factions as $faction) {
             foreach($faction->roles as $role) {
                 $role->already_in = 0;
                 if (in_array($role->id, $alreadyIn)) {
                     $role->already_in = 1;
                 }
+                $role->maybe_in = 0;
+                if (in_array($role->faction_id, $maybeIn)) {
+                    $role->maybe_in = 1;
+                }
+
             }
         }
 
         return $factions;
+    }
+
+    public function updateGame(Request $request, Game $game) {
+        $r = $request->all();
+        if ($r['announceState']) {
+
+            $role = Role::find($r['announceId']);
+            $faction = Faction::find($role->faction_id);
+            $count = Maybe::where([
+                'game_id' => $game->id,
+                'faction_id' => $faction->id
+            ])->count();
+
+            // add or remove from the player list accordingly.
+            if ($r['announceState'] == "add") {
+                if ($count == 0 && $role->moons != 1) {
+                    Maybe::create([
+                        'game_id' => $game->id,
+                        'role_id' => $role->id,
+                        'faction_id' => $faction->id
+                    ]);
+                }
+                // announce addition
+            } else {
+                Maybe::where([
+                    'game_id' => $game->id,
+                    'role_id' => $role->id,
+                    'faction_id' => $faction->id
+                ])->delete();
+
+                if ($count == 1 && $role->moons != 1) { // last one
+                    // announce deletion
+                }
+            }
+        }
+
+        if ($r['roleState']) {
+
+            // add or remove from the game positions accordingly.
+            if ($r['roleState'] == "add") {
+                Position::create([
+                    'game_id' => $game->id,
+                    'role_id' => $r['roleId']
+                ]);
+            } else {
+                Position::where([
+                    'game_id' => $game->id,
+                    'role_id' => $r['roleId']
+                ])->delete();
+            }
+        }
+
+
     }
 }
