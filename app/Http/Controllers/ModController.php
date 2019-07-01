@@ -10,6 +10,7 @@ use App\Player;
 use App\Faction;
 use App\Position;
 use Carbon\Carbon;
+use App\Events\GameUpdated;
 use Illuminate\Http\Request;
 
 class ModController extends Controller
@@ -23,7 +24,6 @@ class ModController extends Controller
         $games = Game::where('moderator_id', Auth::id())
                      ->orderBy('created_at', 'DESC')
                      ->get();
-
 
         return view('mod.games', ['games' => $games]);
     }
@@ -116,8 +116,8 @@ class ModController extends Controller
                         'role_id' => $role->id,
                         'faction_id' => $faction->id
                     ]);
+                    GameUpdated::dispatch('add', $faction->name);
                 }
-                // announce addition
             } else {
                 Maybe::where([
                     'game_id' => $game->id,
@@ -126,7 +126,7 @@ class ModController extends Controller
                 ])->delete();
 
                 if ($count == 1 && $role->moons != 1) { // last one
-                    // announce deletion
+                    GameUpdated::dispatch('remove', $faction->name);
                 }
             }
         }
