@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Game;
+use App\Maybe;
 use App\Player;
 use Carbon\Carbon;
 use App\Events\PlayerCreated;
@@ -35,5 +36,21 @@ class PlayerController extends Controller
         ]);
 
         PlayerCreated::dispatch($player);
+
+        return redirect('/room/'.$game->id);
+    }
+
+    public function waiting(Game $game) {
+        return view('player.waiting_room', ['id' => $game->id]);
+    }
+
+    public function getFactions(Game $game) {
+        $factions[] = "One Moon";
+        $temp = Maybe::where('game_id', $game->id)
+                       ->join('factions', 'maybes.faction_id', '=', 'factions.id')
+                       ->pluck('factions.name')
+                       ->toArray();
+
+        return array_merge($factions, $temp);
     }
 }

@@ -20,7 +20,9 @@
 
            axios.get('/get_players/1', [])
                 .then(res => {
-                    if(res.data.length > 1) {
+                    if(this.players[0] == 'None') {
+                        this.players = res.data;
+                    } else if(res.data.length > 1) {
                         this.players = res.data;
                     }
                 }).catch(err => {

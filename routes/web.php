@@ -31,4 +31,5 @@ Route::middleware(['approved'])->group(function () {
 
 Route::get('/join', 'PlayerController@join');
 Route::post('/join_game', 'PlayerController@submitPlayer');
-
+Route::get('/room/{game}', 'PlayerController@waiting');
+Route::get('factions_in_game/{game}', 'PlayerController@getFactions');

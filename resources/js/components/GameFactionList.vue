@@ -1,0 +1,35 @@
+<template>
+    <div class="faction-div">
+        <h1>Factions in game</h1>
+        <div>
+            <ul>
+                <li v-for="faction in factions" v-text="faction"></li>
+            </ul>
+        </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        data() {
+            return {
+                factions: []
+            }
+        },
+
+        created() {
+           axios.get('/factions_in_game/1', [])
+                .then(res => {
+                    if (res.data.length > 1) {
+                        this.factions = res.data;
+                    }
+                }).catch(err => {
+                console.log(err)
+            })
+
+            window.Echo.channel('updates').listen('GameUpdated', e => {
+                this.factions.push(e.factionName);
+            });
+        }
+    }
+</script>
