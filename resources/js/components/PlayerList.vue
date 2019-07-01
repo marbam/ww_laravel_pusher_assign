@@ -6,6 +6,7 @@
                 <li v-for="player in players" v-text="player"></li>
             </ul>
         </div>
+    <button id="proceed_button" data-players='4' data-roles='5'>Proceed</button>
     </div>
 </template>
 

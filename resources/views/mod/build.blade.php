@@ -69,6 +69,14 @@
 
         });
 
+        $('#proceed_button').click(function() {
+            if ($(this).data('players') == $(this).data('roles')) {
+                alert('confirm');
+            } else {
+                alert('players and roles do not match');
+            }
+        });
+
 
         function sendUpdate(announceState = null, announceId = null, roleState = null, roleId = null ) {
             console.log( announceState, announceId, roleState, roleId);
