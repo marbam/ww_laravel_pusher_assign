@@ -19,6 +19,7 @@ class ModController extends Controller
     {
         $twentyFourHours = Carbon::now()->subHours(24);
         Position::where('created_at', '<', $twentyFourHours)->delete();
+        Maybe::where('created_at', '<', $twentyFourHours)->delete();
         Game::where('created_at', '<', $twentyFourHours)->delete();
 
         $games = Game::where('moderator_id', Auth::id())

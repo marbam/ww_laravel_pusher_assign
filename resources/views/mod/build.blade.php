@@ -79,7 +79,6 @@
 
 
         function sendUpdate(announceState = null, announceId = null, roleState = null, roleId = null ) {
-            console.log( announceState, announceId, roleState, roleId);
             $.ajax({
               method: "POST",
               url: "/mod_update/{{$id}}",
@@ -92,6 +91,11 @@
                 }
             })
             .done(function(data) {
+                let button = $('#proceed_button');
+                let count = button.data('roles');
+                count = count + 1;
+                button.data('roles', count);
+                alert(count);         
                 // alert back to the mod.
             });
         }

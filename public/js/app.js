@@ -1819,19 +1819,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      players: ['None']
+      players: [],
+      startLabel: 'None'
     };
   },
   created: function created() {
     var _this = this;
 
-    axios.get('/get_players/1', []).then(function (res) {
-      if (_this.players[0] == 'None') {
-        _this.players = res.data;
-      } else if (res.data.length > 1) {
+    axios.get('/get_players/8', []).then(function (res) {
+      if (res.data.length) {
         _this.players = res.data;
       }
     })["catch"](function (err) {
@@ -47335,17 +47335,29 @@ var render = function() {
     _c("div", [
       _c(
         "ul",
-        _vm._l(_vm.players, function(player) {
-          return _c("li", { domProps: { textContent: _vm._s(player) } })
-        }),
-        0
+        [
+          !_vm.players.length
+            ? _c("li", { domProps: { textContent: _vm._s(_vm.startLabel) } })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._l(_vm.players, function(player) {
+            return _vm.players.length
+              ? _c("li", { domProps: { textContent: _vm._s(player) } })
+              : _vm._e()
+          })
+        ],
+        2
       )
     ]),
     _vm._v(" "),
     _c(
       "button",
       {
-        attrs: { id: "proceed_button", "data-players": "4", "data-roles": "5" }
+        attrs: {
+          id: "proceed_button",
+          "data-players": _vm.players.length,
+          "data-roles": "2"
+        }
       },
       [_vm._v("Proceed")]
     )

@@ -3,10 +3,11 @@
         <h1>Players in game</h1>
         <div>
             <ul>
-                <li v-for="player in players" v-text="player"></li>
+                <li v-if="!players.length" v-text="startLabel"></li>
+                <li v-if="players.length" v-for="player in players" v-text="player"></li>
             </ul>
         </div>
-    <button id="proceed_button" data-players='4' data-roles='5'>Proceed</button>
+    <button id="proceed_button" :data-players='players.length' data-roles='2'>Proceed</button>
     </div>
 </template>
 
@@ -14,16 +15,15 @@
     export default {
         data() {
             return {
-                players: ['None']
+                players: [],
+                startLabel: 'None'
             }
         },
         created() {
 
-           axios.get('/get_players/1', [])
+           axios.get('/get_players/8', [])
                 .then(res => {
-                    if(this.players[0] == 'None') {
-                        this.players = res.data;
-                    } else if(res.data.length > 1) {
+                    if(res.data.length ) {
                         this.players = res.data;
                     }
                 }).catch(err => {
