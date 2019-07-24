@@ -64,7 +64,14 @@ class ModController extends Controller
 
     public function getPlayers(Game $game)
     {
-        return Player::where('game_id', $game->id)->pluck('name');
+        // get the number of players in the game, list of players and number of roles in the game.
+        $players = Player::where('game_id', $game->id)->pluck('name');
+        $rolesCount = Position::where('game_id', $game->id)->count();
+        $data = ['players' => [], 'roles' => $rolesCount];
+        if ($players->count()) {
+            $data['players'] = $players;
+        }
+        return $data;
     }
 
     public function getGameSetupData(Game $game) {
@@ -95,7 +102,7 @@ class ModController extends Controller
             }
         }
 
-        return $factions;
+        return ['factions' => $factions, 'game_id' => $game->id];
     }
 
     public function updateGame(Request $request, Game $game) {

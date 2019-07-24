@@ -6,6 +6,9 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+        <script>
+            var gameId = {!! json_encode($data['game_id']) !!}
+        </script>
 
         <title>Bristol Werewolf</title>
 
@@ -17,13 +20,13 @@
 
         <div class="roles">
             @include('mod.faction_lists.moon_heading', [
-                'heading' => 'One Moon', 'data' => $data->where('moons', 1)
+                'heading' => 'One Moon', 'data' => $data['factions']->where('moons', 1)
             ])
             @include('mod.faction_lists.moon_heading', [
-                'heading' => 'Two Moons', 'data' => $data->where('moons', 2)
+                'heading' => 'Two Moons', 'data' => $data['factions']->where('moons', 2)
             ])
             @include('mod.faction_lists.moon_heading', [
-                'heading' => 'Three Moon', 'data' => $data->where('moons', 3)
+                'heading' => 'Three Moon', 'data' => $data['factions']->where('moons', 3)
             ])
         </div>
     </body>
@@ -71,7 +74,9 @@
 
         $('#proceed_button').click(function() {
             if ($(this).data('players') == $(this).data('roles')) {
-                alert('confirm');
+                if (confirm("Are you sure you're ready to close the game?")) {
+
+                }
             } else {
                 alert('players and roles do not match');
             }
@@ -93,10 +98,12 @@
             .done(function(data) {
                 let button = $('#proceed_button');
                 let count = button.data('roles');
-                count = count + 1;
+                if (announceState == 'add') {
+                    count = count + 1;
+                } else {
+                    count = count - 1;
+                }
                 button.data('roles', count);
-                alert(count);         
-                // alert back to the mod.
             });
         }
 

@@ -41,7 +41,7 @@ class PlayerController extends Controller
     }
 
     public function waiting(Game $game) {
-        return view('player.waiting_room', ['id' => $game->id]);
+        return view('player.waiting_room', ['game_id' => $game->id]);
     }
 
     public function getFactions(Game $game) {

@@ -7,7 +7,7 @@
                 <li v-if="players.length" v-for="player in players" v-text="player"></li>
             </ul>
         </div>
-    <button id="proceed_button" :data-players='players.length' data-roles='2'>Proceed</button>
+    <button id="proceed_button" :data-players='players.length' :data-roles='roleCount'>Proceed</button>
     </div>
 </template>
 
@@ -16,16 +16,17 @@
         data() {
             return {
                 players: [],
-                startLabel: 'None'
+                startLabel: 'None',
+                roleCount: 0,
             }
         },
         created() {
-
-           axios.get('/get_players/8', [])
+           axios.get("/get_players/"+gameId, [])
                 .then(res => {
-                    if(res.data.length ) {
-                        this.players = res.data;
+                    if (res.data.players.length ) {
+                        this.players = res.data.players;
                     }
+                    this.roleCount = res.data.roles;
                 }).catch(err => {
                 console.log(err)
             })

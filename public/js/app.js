@@ -1783,7 +1783,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    axios.get('/factions_in_game/1', []).then(function (res) {
+    axios.get('/factions_in_game/' + gameId, []).then(function (res) {
       if (res.data.length > 1) {
         _this.factions = res.data;
       }
@@ -1824,16 +1824,19 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       players: [],
-      startLabel: 'None'
+      startLabel: 'None',
+      roleCount: 0
     };
   },
   created: function created() {
     var _this = this;
 
-    axios.get('/get_players/8', []).then(function (res) {
-      if (res.data.length) {
-        _this.players = res.data;
+    axios.get("/get_players/" + gameId, []).then(function (res) {
+      if (res.data.players.length) {
+        _this.players = res.data.players;
       }
+
+      _this.roleCount = res.data.roles;
     })["catch"](function (err) {
       console.log(err);
     });
@@ -47356,7 +47359,7 @@ var render = function() {
         attrs: {
           id: "proceed_button",
           "data-players": _vm.players.length,
-          "data-roles": "2"
+          "data-roles": _vm.roleCount
         }
       },
       [_vm._v("Proceed")]

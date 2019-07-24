@@ -18,7 +18,7 @@
         },
 
         created() {
-           axios.get('/factions_in_game/1', [])
+           axios.get('/factions_in_game/'+gameId, [])
                 .then(res => {
                     if (res.data.length > 1) {
                         this.factions = res.data;
