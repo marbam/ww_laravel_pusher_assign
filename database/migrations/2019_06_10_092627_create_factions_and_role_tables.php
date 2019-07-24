@@ -18,6 +18,7 @@ class CreateFactionsAndRoleTables extends Migration
             $table->string('name');
             $table->smallInteger('moons');
             $table->unsignedInteger('f_order');
+            $table->boolean('show_in_listing')->default(1);
             $table->timestamps();
         });
 

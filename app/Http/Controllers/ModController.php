@@ -79,6 +79,7 @@ class ModController extends Controller
                                     $roles->orderBy('r_order');
                                 }])
                                 ->orderBy('f_order')
+                                ->where('show_in_listing', 1)
                                 ->get();
 
         $alreadyIn = Position::where('game_id', $game->id)
@@ -109,31 +110,40 @@ class ModController extends Controller
         $r = $request->all();
         if ($r['announceState']) { // if a faction is to be added or removed
             $role = Role::find($r['announceId']);
-            $faction = Faction::find($role->faction_id);
-            $count = Maybe::where([
-                'game_id' => $game->id,
-                'faction_id' => $faction->id
-            ])->count();
 
-            // add or remove from the player list accordingly.
-            if ($r['announceState'] == "add") {
-                Maybe::firstOrCreate([
-                    'game_id' => $game->id,
-                    'role_id' => $role->id,
-                    'faction_id' => $faction->id
-                ]);
-                if ($count == 0 && $role->moons != 1) {
-                    GameUpdated::dispatch('add', $faction->name);
-                }
-            } else if ($r['announceState'] == "remove"){ // should always be remove, but cover our bases.
-                Maybe::where([
-                    'game_id' => $game->id,
-                    'role_id' => $role->id,
-                    'faction_id' => $faction->id
-                ])->delete();
+            $announced_faction = null;
+            if ($role->notification_faction_id) {
+                $announced_faction = Faction::find($role->notification_faction_id);
+            }
 
-                if ($count == 1 && $role->moons != 1) { // last one
-                    GameUpdated::dispatch('remove', $faction->name);
+            // if it's still null, it's not meant to be announced to the village, so skip everything below:
+            // (e.g. don't announce village or wolf pack - they're covered by the one moon stuff)
+            if ($announced_faction) {
+                $count = Maybe::where([
+                    'game_id' => $game->id,
+                    'faction_id' => $announced_faction->id
+                ])->count();
+
+                // add or remove from the player list accordingly.
+                if ($r['announceState'] == "add") {
+                    Maybe::firstOrCreate([
+                        'game_id' => $game->id,
+                        'role_id' => $role->id,
+                        'faction_id' => $announced_faction->id
+                    ]);
+                    if ($count == 0 && $role->moons != 1) {
+                        GameUpdated::dispatch('add', $announced_faction->name);
+                    }
+                } else if ($r['announceState'] == "remove"){ // should always be remove, but cover our bases.
+                    Maybe::where([
+                        'game_id' => $game->id,
+                        'role_id' => $role->id,
+                        'faction_id' => $announced_faction->id
+                    ])->delete();
+
+                    if ($count == 1 && $role->moons != 1) { // last one
+                        GameUpdated::dispatch('remove', $announced_faction->name);
+                    }
                 }
             }
         }

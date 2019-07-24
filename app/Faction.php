@@ -9,7 +9,8 @@ class Faction extends Model
     protected $fillable = [
         'name',
         'moons',
-        'f_order'
+        'f_order',
+        'show_in_listing'
     ];
 
     public function roles()

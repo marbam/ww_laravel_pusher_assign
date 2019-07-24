@@ -20,7 +20,7 @@
         created() {
            axios.get('/factions_in_game/'+gameId, [])
                 .then(res => {
-                    if (res.data.length > 1) {
+                    if (res.data.length > 0) {
                         this.factions = res.data;
                     }
                 }).catch(err => {

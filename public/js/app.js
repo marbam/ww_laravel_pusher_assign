@@ -1784,7 +1784,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     axios.get('/factions_in_game/' + gameId, []).then(function (res) {
-      if (res.data.length > 1) {
+      if (res.data.length > 0) {
         _this.factions = res.data;
       }
     })["catch"](function (err) {
