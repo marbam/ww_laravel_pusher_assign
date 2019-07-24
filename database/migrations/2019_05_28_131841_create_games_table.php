@@ -17,6 +17,7 @@ class CreateGamesTable extends Migration
             $table->bigIncrements('id');
             $table->string('code', 10);
             $table->unsignedInteger('moderator_id');
+            $table->boolean('closed')->default(0);
             $table->timestamps();
         });
     }
