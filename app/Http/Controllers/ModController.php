@@ -107,8 +107,7 @@ class ModController extends Controller
 
     public function updateGame(Request $request, Game $game) {
         $r = $request->all();
-        if ($r['announceState']) {
-
+        if ($r['announceState']) { // if a faction is to be added or removed
             $role = Role::find($r['announceId']);
             $faction = Faction::find($role->faction_id);
             $count = Maybe::where([
@@ -118,15 +117,15 @@ class ModController extends Controller
 
             // add or remove from the player list accordingly.
             if ($r['announceState'] == "add") {
+                Maybe::firstOrCreate([
+                    'game_id' => $game->id,
+                    'role_id' => $role->id,
+                    'faction_id' => $faction->id
+                ]);
                 if ($count == 0 && $role->moons != 1) {
-                    Maybe::create([
-                        'game_id' => $game->id,
-                        'role_id' => $role->id,
-                        'faction_id' => $faction->id
-                    ]);
                     GameUpdated::dispatch('add', $faction->name);
                 }
-            } else {
+            } else if ($r['announceState'] == "remove"){ // should always be remove, but cover our bases.
                 Maybe::where([
                     'game_id' => $game->id,
                     'role_id' => $role->id,

@@ -1791,7 +1791,13 @@ __webpack_require__.r(__webpack_exports__);
       console.log(err);
     });
     window.Echo.channel('updates').listen('GameUpdated', function (e) {
-      _this.factions.push(e.factionName);
+      if (e.state == 'add') {
+        _this.factions.push(e.factionName);
+      } else {
+        _this.factions = _this.factions.filter(function (faction) {
+          return faction != e.factionName;
+        });
+      }
     });
   }
 });

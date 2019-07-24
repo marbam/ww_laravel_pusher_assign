@@ -28,7 +28,11 @@
             })
 
             window.Echo.channel('updates').listen('GameUpdated', e => {
-                this.factions.push(e.factionName);
+                if (e.state == 'add'){
+                    this.factions.push(e.factionName);
+                } else {
+                    this.factions = this.factions.filter(faction => faction != e.factionName);
+                }
             });
         }
     }
