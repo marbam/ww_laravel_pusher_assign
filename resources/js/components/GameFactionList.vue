@@ -27,7 +27,7 @@
                 console.log(err)
             })
 
-            window.Echo.channel('updates').listen('GameUpdated', e => {
+            window.Echo.channel('updates-'+gameId).listen('GameUpdated', e => {
                 if (e.state == 'add'){
                     this.factions.push(e.factionName);
                 } else if(e.state == 'remove') {

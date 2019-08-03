@@ -4,7 +4,6 @@
 			@yield('content')
 		</div>
     </body>
-@include('templates.footer')
 </html>
 
 

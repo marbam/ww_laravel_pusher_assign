@@ -28,7 +28,9 @@ class AppServiceProvider extends ServiceProvider
             $data = $validator->getData();
             $game = \App\Game::where('code', $data['code'])->first();
             if ($game) {
-                $playerExists = \App\Player::where('name', $value)->count();
+                $playerExists = \App\Player::where('name', $value)
+                                           ->where('game_id', $game->id)
+                                           ->count();
                 if (!$playerExists) {
                     return true;
                 }

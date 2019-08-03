@@ -16,14 +16,16 @@ class PlayerCreated implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $player;
+    public $gameId;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Player $player)
+    public function __construct(Player $player, $gameId)
     {
         $this->player = $player;
+        $this->gameId = $gameId;
     }
 
     /**
@@ -34,6 +36,6 @@ class PlayerCreated implements ShouldBroadcast
     public function broadcastOn()
     {
         // return new PrivateChannel('channel-name');
-        return new Channel('games');
+        return new Channel('games-'.$this->gameId);
     }
 }

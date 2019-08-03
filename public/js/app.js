@@ -1790,7 +1790,7 @@ __webpack_require__.r(__webpack_exports__);
     })["catch"](function (err) {
       console.log(err);
     });
-    window.Echo.channel('updates').listen('GameUpdated', function (e) {
+    window.Echo.channel('updates-' + gameId).listen('GameUpdated', function (e) {
       if (e.state == 'add') {
         _this.factions.push(e.factionName);
       } else if (e.state == 'remove') {
@@ -1828,6 +1828,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1848,7 +1849,7 @@ __webpack_require__.r(__webpack_exports__);
     })["catch"](function (err) {
       console.log(err);
     });
-    window.Echo.channel('games').listen('PlayerCreated', function (e) {
+    window.Echo.channel('games-' + gameId).listen('PlayerCreated', function (e) {
       _this.players.push(e.player.name);
     });
   }
@@ -47341,7 +47342,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "players" }, [
-    _c("h1", [_vm._v("Players in game")]),
+    _c("h1", [_vm._v("Players in game(" + _vm._s(_vm.players.length) + ")")]),
     _vm._v(" "),
     _c("div", [
       _c(
@@ -47364,6 +47365,7 @@ var render = function() {
     _c(
       "button",
       {
+        staticClass: "btn btn-success",
         attrs: {
           id: "proceed_button",
           "data-players": _vm.players.length,
@@ -47371,7 +47373,11 @@ var render = function() {
         }
       },
       [_vm._v("Proceed")]
-    )
+    ),
+    _vm._v(" "),
+    _c("span", { staticStyle: { "font-style": "italic" } }, [
+      _vm._v("(You can only submit the game when players = number of roles in)")
+    ])
   ])
 }
 var staticRenderFns = []

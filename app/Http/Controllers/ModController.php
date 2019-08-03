@@ -12,6 +12,7 @@ use App\Position;
 use Carbon\Carbon;
 use App\Events\GameUpdated;
 use Illuminate\Http\Request;
+use App\Http\Requests\NewGameRequest;
 
 class ModController extends Controller
 {
@@ -34,14 +35,10 @@ class ModController extends Controller
         return view('mod.new_game');
     }
 
-    public function submitGame(Request $request)
+    public function submitGame(NewGameRequest $request)
     {
-        $validatedData = $request->validate([
-            'code' => 'required|unique:games|max:20',
-        ]);
-
         $new = Game::create([
-            'code' => $validatedData['code'],
+            'code' => $request['code'],
             'moderator_id' => Auth::id()
         ]);
 
@@ -103,7 +100,7 @@ class ModController extends Controller
             }
         }
 
-        return ['factions' => $factions, 'game_id' => $game->id];
+        return ['factions' => $factions, 'game_id' => $game->id, 'alreadyIn' => sizeof($alreadyIn)];
     }
 
     public function updateGame(Request $request, Game $game) {
@@ -132,7 +129,7 @@ class ModController extends Controller
                         'faction_id' => $announced_faction->id
                     ]);
                     if ($count == 0 && $role->moons != 1) {
-                        GameUpdated::dispatch('add', $announced_faction->name);
+                        GameUpdated::dispatch('add', $announced_faction->name, $game->id);
                     }
                 } else if ($r['announceState'] == "remove"){ // should always be remove, but cover our bases.
                     Maybe::where([
@@ -142,7 +139,7 @@ class ModController extends Controller
                     ])->delete();
 
                     if ($count == 1 && $role->moons != 1) { // last one
-                        GameUpdated::dispatch('remove', $announced_faction->name);
+                        GameUpdated::dispatch('remove', $announced_faction->name, $game->id);
                     }
                 }
             }
@@ -213,7 +210,7 @@ class ModController extends Controller
         }
 
         // announce to players that the game is updated
-        GameUpdated::dispatch('ready', null);
+        GameUpdated::dispatch('ready', null, $game->id);
 
         // show a listing of all the players and their allocated role to the mod to finish up.
         $data['players'] = Player::where('game_id', $game->id)->orderBy('listing_order')->get();

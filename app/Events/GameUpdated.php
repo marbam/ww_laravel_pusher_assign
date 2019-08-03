@@ -17,15 +17,17 @@ class GameUpdated implements ShouldBroadcast
 
     public $state;
     public $factionName;
+    public $gameId;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($state, $factionName)
+    public function __construct($state, $factionName, $gameId)
     {
         $this->state = $state;
         $this->factionName = $factionName;
+        $this->gameId = $gameId;
     }
 
     /**
@@ -36,6 +38,6 @@ class GameUpdated implements ShouldBroadcast
     public function broadcastOn()
     {
         // return new PrivateChannel('channel-name');
-        return new Channel('updates');
+        return new Channel('updates-'.$this->gameId);
     }
 }

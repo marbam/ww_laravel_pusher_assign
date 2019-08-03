@@ -1,32 +1,37 @@
-<p>Your role is ready!</p>
-<div id="reveal">
-	<p>Click here to reveal it</p>
-</div>
+@extends('templates.master')
 
+@section('content')
 
-<div id="role-details">
-	<p>Your role is {{$player->role->name}}</p>
-	@if ($player->role->faction->show_faction_on_reveal) 
-		<p>Your faction is {{$player->role->faction}}</p>
-	@endif
+    <div class="container">
 
-	<p>You are @if(!$player->role->mystic) *NOT* a @endif Mystic</p>
-	<p>You show as @if(!$player->role->corrupt) Non- @endif Corrupt</p>
+        <div class="jumbotron text-center" id="page-heading">
+            <h1 class="jumbotron-heading">Your role is ready!</h1>
+			<button type="button" class="btn btn-primary btn-lg btn-block" id="reveal">Click here to show your role!</button>
+        </div>
 
-	<button>Go back to Games Listing!</button>
-</div>
+		<div class="jumbotron text-center" id="role-details" style="display:none">
+			<h4>You are the <span style="font-weight: bold">{{$player->role->name}}</span></h4>
+			@if ($player->role->show_faction_on_reveal)
+				<h4>Your faction is {{$player->role->faction->name}}</h4>
+			@endif
 
-<style>
-	#reveal {
-		height: 200px;
-		width: 200px;
-		background-color: blue;
-		border-radius: 25px;
-		text-align: center;
-	}
+			<h4>You are @if(!$player->role->mystic) *NOT* a @endif Mystic</h4>
+			<h4>You show as @if(!$player->role->corrupt) Non- @endif Corrupt</h4>
 
-	#reveal p {
-		padding-top: 80px;
-	}
+			<button class="btn btn-success my-2" id="go-home">Back to Home Page!</button>
+		</div>
+    </div>
 
-</style>
+<script>
+	$('#reveal').on('click', function() {
+		$('#page-heading').hide();
+		$('#role-details').show();
+	});
+
+	$('#go-home').on('click', function() {
+		if (confirm("Are you sure you want to leave? You won't be able to get back here!")) {
+			window.location.href = "/reset-player";
+		}
+	})
+</script>
+@endsection

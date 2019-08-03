@@ -14,20 +14,34 @@
 
     </head>
     <body>
-    	<div id="app">
-    		<player-list></player-list>
-    	</div>
-
-        <div class="roles">
-            @include('mod.faction_lists.moon_heading', [
-                'heading' => 'One Moon', 'data' => $data['factions']->where('moons', 1)
-            ])
-            @include('mod.faction_lists.moon_heading', [
-                'heading' => 'Two Moons', 'data' => $data['factions']->where('moons', 2)
-            ])
-            @include('mod.faction_lists.moon_heading', [
-                'heading' => 'Three Moon', 'data' => $data['factions']->where('moons', 3)
-            ])
+        <div class="container">
+            <div class="jumbotron text-center">
+                <h1 class="jumbotron-heading">Building Game</h1>
+                <p class="lead text-muted">First section below is a real-time list of players joining the game. </p>
+                <p class="lead text-muted">Next up is the role list. Each role has two buttons next to it - Clicking the left one will announce the faction as a MAYBE IN to the players waiting, or remove it from their list. Clicking the right one will add it to your private game list. </p>
+                <a href="/games" class="btn btn-success my-2">Back to Games List</a>
+            </div>
+            <div id="app">
+                <player-list></player-list>
+            </div>
+            <hr>
+            <div>
+                <h2>Roles in Game: <span id="role_count">{{$data['alreadyIn']}}</span></h2>
+            </div>
+            <hr>
+            <div class="roles">
+                @include('mod.faction_lists.moon_heading', [
+                    'heading' => 'One Moon', 'data' => $data['factions']->where('moons', 1)
+                ])
+                <hr>
+                @include('mod.faction_lists.moon_heading', [
+                    'heading' => 'Two Moons', 'data' => $data['factions']->where('moons', 2)
+                ])
+                <hr>
+                @include('mod.faction_lists.moon_heading', [
+                    'heading' => 'Three Moon', 'data' => $data['factions']->where('moons', 3)
+                ])
+            </div>
         </div>
     </body>
 
@@ -104,6 +118,7 @@
                     count = count - 1;
                 }
                 button.data('roles', count);
+                $('#role_count').html(count);
             });
         }
 

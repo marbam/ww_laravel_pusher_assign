@@ -38,3 +38,4 @@ Route::post('/join_game', 'PlayerController@submitPlayer');
 Route::get('/room/{game}', 'PlayerController@waiting');
 Route::get('/factions_in_game/{game}', 'PlayerController@getFactions');
 Route::get('/roles_ready', 'PlayerController@roleReveal');
+Route::get('/reset-player', 'PlayerController@resetPlayer');
