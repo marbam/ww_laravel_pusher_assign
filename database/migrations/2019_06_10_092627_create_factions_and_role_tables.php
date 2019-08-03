@@ -18,6 +18,7 @@ class CreateFactionsAndRoleTables extends Migration
             $table->string('name');
             $table->smallInteger('moons');
             $table->unsignedInteger('f_order');
+            $table->boolean('show_in_listing')->default(1);
             $table->timestamps();
         });
 
@@ -29,7 +30,11 @@ class CreateFactionsAndRoleTables extends Migration
             $table->foreign('faction_id')->references('id')->on('factions');
             $table->unsignedBigInteger('notification_faction_id')->nullable();
             $table->foreign('notification_faction_id')->references('id')->on('factions');
+            $table->unsignedInteger('moons')->nullable();
             $table->unsignedInteger('r_order');
+            $table->boolean('show_faction_on_reveal')->default(1);
+            $table->boolean('mystic')->default(0);
+            $table->boolean('corrupt')->default(0);
             $table->timestamps();
         });
     }

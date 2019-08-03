@@ -9,8 +9,19 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 
-		<script src="/js/app.js"></script>
+        @if (Route::has('login'))
+            <div class="flex-center position-ref full-height">
+                <div class="top-right links">
+                    @auth
+                        <a href="/">Home</a>
+                        <a href="/games">Games Listing</a>
+                    @endauth
+                </div>
+            </div>
+        @endif
 
         <!-- Styles -->
         <style>
@@ -24,7 +35,7 @@
             }
 
             .full-height {
-                height: 100vh;
+                height: 10vh;
             }
 
             .flex-center {

@@ -11,20 +11,22 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class PlayerCreated implements ShouldBroadcast
+class GameUpdated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $player;
+    public $state;
+    public $factionName;
     public $gameId;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Player $player, $gameId)
+    public function __construct($state, $factionName, $gameId)
     {
-        $this->player = $player;
+        $this->state = $state;
+        $this->factionName = $factionName;
         $this->gameId = $gameId;
     }
 
@@ -36,6 +38,6 @@ class PlayerCreated implements ShouldBroadcast
     public function broadcastOn()
     {
         // return new PrivateChannel('channel-name');
-        return new Channel('games-'.$this->gameId);
+        return new Channel('updates-'.$this->gameId);
     }
 }
