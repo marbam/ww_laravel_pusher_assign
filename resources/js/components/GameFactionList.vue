@@ -30,8 +30,10 @@
             window.Echo.channel('updates').listen('GameUpdated', e => {
                 if (e.state == 'add'){
                     this.factions.push(e.factionName);
-                } else {
+                } else if(e.state == 'remove') {
                     this.factions = this.factions.filter(faction => faction != e.factionName);
+                } else if(e.state == 'ready') {
+                    window.location.href = "/roles_ready";
                 }
             });
         }

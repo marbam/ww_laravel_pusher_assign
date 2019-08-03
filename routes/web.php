@@ -26,11 +26,15 @@ Route::middleware(['approved'])->group(function () {
     Route::get('/game/{game}', 'ModController@setupGame');
     Route::get('/get_players/{game}', 'ModController@getPlayers');
     Route::get('/get_factions/{game}', 'ModController@getGameSetupData');
-    Route::post('mod_update/{game}', 'ModController@updateGame');
-    Route::post('close/{game}', 'ModController@closeGame');
+    Route::post('/mod_update/{game}', 'ModController@updateGame');
+    Route::get('/close/{game}', 'ModController@closeGame');
+    Route::get('/allocate/{game}', 'ModController@allocateScreen');
+    Route::post('/final_allocation/{game}', 'ModController@autoAllocate');
+    Route::get('/add_test_players/{game_id}', 'PlayerController@addTestPlayers');
 });
 
 Route::get('/join', 'PlayerController@join');
 Route::post('/join_game', 'PlayerController@submitPlayer');
 Route::get('/room/{game}', 'PlayerController@waiting');
-Route::get('factions_in_game/{game}', 'PlayerController@getFactions');
+Route::get('/factions_in_game/{game}', 'PlayerController@getFactions');
+Route::get('/roles_ready', 'PlayerController@roleReveal');

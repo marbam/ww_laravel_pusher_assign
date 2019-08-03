@@ -1793,10 +1793,12 @@ __webpack_require__.r(__webpack_exports__);
     window.Echo.channel('updates').listen('GameUpdated', function (e) {
       if (e.state == 'add') {
         _this.factions.push(e.factionName);
-      } else {
+      } else if (e.state == 'remove') {
         _this.factions = _this.factions.filter(function (faction) {
           return faction != e.factionName;
         });
+      } else if (e.state == 'ready') {
+        window.location.href = "/roles_ready";
       }
     });
   }

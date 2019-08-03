@@ -47,19 +47,19 @@ class FactionRoleSeeder extends Seeder
 
         $factions = Faction::get();
 
-        $roles[] = ['name' => 'Alpha Wolf', 'faction' => "Wolf Pack", 'announced_faction' => null, 'r_order' => 1];
-        $roles[] = ['name' => 'Pack Wolf', 'faction' => "Wolf Pack", 'announced_faction' => null, 'r_order' => 2];
-        $roles[] = ['name' => 'Wolf Pup', 'faction' => "Wolf Pack", 'announced_faction' => null, 'r_order' => 3];
+        $roles[] = ['name' => 'Alpha Wolf', 'faction' => "Wolf Pack", 'announced_faction' => null, 'r_order' => 1, 'corrupt' => 1];
+        $roles[] = ['name' => 'Pack Wolf', 'faction' => "Wolf Pack", 'announced_faction' => null, 'r_order' => 2, 'corrupt' => 1];
+        $roles[] = ['name' => 'Wolf Pup', 'faction' => "Wolf Pack", 'announced_faction' => null, 'r_order' => 3, 'corrupt' => 1];
         $roles[] = ['name' => 'Defector', 'faction' => "Defector", 'announced_faction' => null, 'r_order' => 4, 'show_faction_on_reveal' => false];
-        $roles[] = ['name' => 'Clairvoyant', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 5];
-        $roles[] = ['name' => 'Wizard', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 6];
-        $roles[] = ['name' => 'Medium', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 7];
-        $roles[] = ['name' => 'Witch', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 8];
-        $roles[] = ['name' => 'Healer', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 9];
+        $roles[] = ['name' => 'Clairvoyant', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 5, 'mystic' => 1];
+        $roles[] = ['name' => 'Wizard', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 6, 'mystic' => 1];
+        $roles[] = ['name' => 'Medium', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 7, 'mystic' => 1];
+        $roles[] = ['name' => 'Witch', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 8, 'mystic' => 1];
+        $roles[] = ['name' => 'Healer', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 9, 'mystic' => 1];
         $roles[] = ['name' => 'Farmer', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 10];
         $roles[] = ['name' => 'Farmer', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 11];
         $roles[] = ['name' => 'Priest', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 12];
-        $roles[] = ['name' => 'Sinner', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 13];
+        $roles[] = ['name' => 'Sinner', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 13, 'corrupt' => 1];
         $roles[] = ['name' => 'Monk', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 14];
         $roles[] = ['name' => 'Bard', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 15];
         $roles[] = ['name' => 'Innkeeper', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 16];
@@ -68,7 +68,7 @@ class FactionRoleSeeder extends Seeder
         $roles[] = ['name' => 'Madman', 'faction' => "Madman", 'announced_faction' => null, 'r_order' => 19];
         $roles[] = ['name' => 'Farmer', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 20];
 
-        $roles[] = ['name' => 'Vampire', 'faction' => "Vampire", 'announced_faction' => "Vampire", 'r_order' => 21];
+        $roles[] = ['name' => 'Vampire', 'faction' => "Vampire", 'announced_faction' => "Vampire", 'r_order' => 21, 'corrupt' => 1];
         $roles[] = ['name' => 'Igor', 'faction' => "Igor", 'announced_faction' => null, 'r_order' => 22, 'show_faction_on_reveal' => false];
         $roles[] = ['name' => 'Vampire Hunter', 'faction' => "Village", 'announced_faction' => null, 'r_order' => 23];
 
@@ -76,10 +76,10 @@ class FactionRoleSeeder extends Seeder
         $roles[] = ['name' => 'Mayor', 'faction' => "City", 'announced_faction' => "City", 'r_order' => 25];
         $roles[] = ['name' => 'Merchant', 'faction' => "City", 'announced_faction' => "City", 'r_order' => 26];
         $roles[] = ['name' => 'Preacher', 'faction' => "City", 'announced_faction' => "City", 'r_order' => 27];
-        $roles[] = ['name' => 'Seducer', 'faction' => "City", 'announced_faction' => "City", 'r_order' => 28];
+        $roles[] = ['name' => 'Seducer', 'faction' => "City", 'announced_faction' => "City", 'r_order' => 28, 'corrupt' => 1];
 
-        $roles[] = ['name' => 'Assassin', 'faction' => "Criminals", 'announced_faction' => "Criminals", 'r_order' => 29];
-        $roles[] = ['name' => 'Corrupt Guard', 'faction' => "Criminals", 'announced_faction' => "Criminals", 'r_order' => 30];
+        $roles[] = ['name' => 'Assassin', 'faction' => "Criminals", 'announced_faction' => "Criminals", 'r_order' => 29, 'corrupt' => 1];
+        $roles[] = ['name' => 'Corrupt Guard', 'faction' => "Criminals", 'announced_faction' => "Criminals", 'r_order' => 30, 'corrupt' => 1];
         $roles[] = ['name' => 'Guild Master', 'faction' => "Criminals", 'announced_faction' => "Criminals", 'r_order' => 31];
         $roles[] = ['name' => 'Thief', 'faction' => "Criminals", 'announced_faction' => "Criminals", 'r_order' => 32];
         $roles[] = ['name' => 'Spy', 'faction' => "Criminals", 'announced_faction' => "Criminals", 'r_order' => 33];
@@ -95,15 +95,15 @@ class FactionRoleSeeder extends Seeder
         $roles[] = ['name' => 'Vagrant', 'faction' => "Vagrant", 'announced_faction' => "Vagrant", 'moons' => 3, 'r_order' => 39];
         
         $roles[] = ['name' => 'Inquisitor', 'faction' => "Inquisition", 'announced_faction' => "Inquisition", 'r_order' => 39];
-        $roles[] = ['name' => 'Executioner', 'faction' => "Inquisition", 'announced_faction' => "Inquisition", 'r_order' => 39];
+        $roles[] = ['name' => 'Executioner', 'faction' => "Inquisition", 'announced_faction' => "Inquisition", 'r_order' => 39, 'corrupt' => 1];
         $roles[] = ['name' => 'Templar', 'faction' => "Inquisition", 'announced_faction' => "Inquisition", 'r_order' => 39];
 
-        $roles[] = ['name' => 'Hag', 'faction' => "Hag", 'announced_faction' => "Hag", 'r_order' => 40];
-        $roles[] = ['name' => 'Outcast Wolf', 'faction' => "Wolf Pack", 'announced_faction' => "Outcast Wolf", 'moons' => 3, 'r_order' => 41];
-        $roles[] = ['name' => 'Lone Wolf', 'faction' => "Lone Wolf", 'announced_faction' => "Lone Wolf", 'r_order' => 42];
-        $roles[] = ['name' => 'Necromancer', 'faction' => "Necromancer", 'announced_faction' => "Necromancer", 'r_order' => 43];
-        $roles[] = ['name' => 'Nosferatu', 'faction' => "Nosferatu", 'announced_faction' => "Nosferatu", 'r_order' => 44];
-        $roles[] = ['name' => 'Possessed', 'faction' => "Possessed", 'announced_faction' => "Possessed", 'r_order' => 45];
+        $roles[] = ['name' => 'Hag', 'faction' => "Hag", 'announced_faction' => "Hag", 'r_order' => 40, 'corrupt' => 1, 'mystic' => 1];
+        $roles[] = ['name' => 'Outcast Wolf', 'faction' => "Wolf Pack", 'announced_faction' => "Outcast Wolf", 'moons' => 3, 'r_order' => 41, 'corrupt' => 1];
+        $roles[] = ['name' => 'Lone Wolf', 'faction' => "Lone Wolf", 'announced_faction' => "Lone Wolf", 'r_order' => 42, 'corrupt' => 1];
+        $roles[] = ['name' => 'Necromancer', 'faction' => "Necromancer", 'announced_faction' => "Necromancer", 'r_order' => 43, 'corrupt' => 1, 'mystic' => 1];
+        $roles[] = ['name' => 'Nosferatu', 'faction' => "Nosferatu", 'announced_faction' => "Nosferatu", 'r_order' => 44, 'corrupt' => 1];
+        $roles[] = ['name' => 'Possessed', 'faction' => "Possessed", 'announced_faction' => "Possessed", 'r_order' => 45, 'corrupt' => 1];
 
         foreach($roles as $role) {
             $factionId = $factions->where('name', $role['faction']);

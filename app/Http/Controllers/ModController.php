@@ -163,7 +163,62 @@ class ModController extends Controller
                 ])->delete();
             }
         }
+    }
 
+    public function closeGame(Game $game)
+    {
+        $game->closed = 1;
+        $game->save();
+        return redirect('/allocate/'.$game->id);
+    }
 
+    public function allocateScreen(Game $game)
+    {
+        $data['game'] = $game;
+        // these guys will be used to populate the manual allocation screen - coming later.
+        // $data['rolesIn'] = Position::where('game_id', $game->id)->get();
+        // $data['roles'] = Role::get();
+        $data['players'] = Player::where('game_id', $game->id)->get();
+        return view('mod.allocate', ['data' => $data]);
+    }
+
+    public function autoAllocate(Request $request, Game $game)
+    {
+        $r = $request->all();
+        unset($r['_token']);
+        $updatedOrders = [];
+        foreach ($r as $player => $playerId) {
+            $exploded = explode("__", $player);
+            $updatedOrders[$exploded[1]] = $playerId;
+        }
+
+        $positions = Position::where('game_id', $game->id)->get();
+        $players = Player::where('game_id', $game->id)->whereNull('allocated_role_id')->get();
+
+        if ($players->count() > 0) {
+            foreach ($positions as $position) {
+                // get a random player from the game's players collection
+                $players = $players->where('allocated_role_id', '=', null);
+                $player = $players->random();
+
+                // allocate the role to the player, save player record
+                $player->allocated_role_id = $position->role_id;
+                $player->listing_order = $updatedOrders[$player->id];
+                $player->save();
+
+                // update the position to allocated
+                $position->allocated = 1;
+                $position->save();
+            }
+        }
+
+        // announce to players that the game is updated
+        GameUpdated::dispatch('ready', null);
+
+        // show a listing of all the players and their allocated role to the mod to finish up.
+        $data['players'] = Player::where('game_id', $game->id)->orderBy('listing_order')->get();
+
+        $data['roles'] = Role::with('faction')->get();
+        return view('mod.player_list', ['data' => $data]);
     }
 }

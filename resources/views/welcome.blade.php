@@ -68,6 +68,7 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
+                        <a href="/games">Games Listing</a>
                     @else
                         <a href="{{ route('login') }}">Moderator Login</a>
 

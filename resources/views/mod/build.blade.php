@@ -75,7 +75,7 @@
         $('#proceed_button').click(function() {
             if ($(this).data('players') == $(this).data('roles')) {
                 if (confirm("Are you sure you're ready to close the game?")) {
-
+                    window.location = "/close/{{$id}}";
                 }
             } else {
                 alert('players and roles do not match');

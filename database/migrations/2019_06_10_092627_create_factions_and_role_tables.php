@@ -33,6 +33,8 @@ class CreateFactionsAndRoleTables extends Migration
             $table->unsignedInteger('moons')->nullable();
             $table->unsignedInteger('r_order');
             $table->boolean('show_faction_on_reveal')->default(1);
+            $table->boolean('mystic')->default(0);
+            $table->boolean('corrupt')->default(0);
             $table->timestamps();
         });
     }
