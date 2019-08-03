@@ -30,7 +30,9 @@ class CreateFactionsAndRoleTables extends Migration
             $table->foreign('faction_id')->references('id')->on('factions');
             $table->unsignedBigInteger('notification_faction_id')->nullable();
             $table->foreign('notification_faction_id')->references('id')->on('factions');
+            $table->unsignedInteger('moons')->nullable();
             $table->unsignedInteger('r_order');
+            $table->boolean('show_faction_on_reveal')->default(1);
             $table->timestamps();
         });
     }
