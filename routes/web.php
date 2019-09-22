@@ -30,6 +30,9 @@ Route::middleware(['approved'])->group(function () {
     Route::get('/close/{game}', 'ModController@closeGame');
     Route::get('/allocate/{game}', 'ModController@allocateScreen');
     Route::post('/final_allocation/{game}', 'ModController@autoAllocate');
+    Route::get('/users', 'UserController@getListing');
+    Route::post('/update_users', 'UserController@updateUsers');
+    Route::get('/user_delete/{user}', 'UserController@deleteUser');
     if (ENV('APP_DEBUG')) {
         Route::get('/add_test_players/{game_id}', 'PlayerController@addTestPlayers');
         Route::get('/add_test_players/{game_id}/{number}', 'PlayerController@addTestPlayersV2');

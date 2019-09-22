@@ -18,7 +18,8 @@ class UsersTableSeeder extends Seeder
             'email' => env('ADMIN_EMAIL'),
             'password' => Hash::make(env('SAMPLE_PASSWORD')),
             'created_at' => Date("Y-m-d H:i:s"),
-            'approved' => 1
+            'approved' => 1,
+            'can_approve' => 1
         ]);
 
 
