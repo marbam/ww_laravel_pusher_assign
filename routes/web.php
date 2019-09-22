@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
+
 Route::middleware(['approved'])->group(function () {
     Route::get('/games', 'ModController@gamesList');
     Route::get('/new_game', 'ModController@newGame');

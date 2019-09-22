@@ -18,6 +18,7 @@
                     @auth
                         <a href="/">Home</a>
                         <a href="/games">Games Listing</a>
+                        <a href="{{ url('/logout') }}">Logout</a>
                     @endauth
                 </div>
             </div>
