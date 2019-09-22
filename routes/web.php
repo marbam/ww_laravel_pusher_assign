@@ -17,8 +17,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-// Route::get('/home', 'HomeController@index')->name('home');
-
 Route::middleware(['approved'])->group(function () {
     Route::get('/games', 'ModController@gamesList');
     Route::get('/new_game', 'ModController@newGame');
@@ -30,7 +28,10 @@ Route::middleware(['approved'])->group(function () {
     Route::get('/close/{game}', 'ModController@closeGame');
     Route::get('/allocate/{game}', 'ModController@allocateScreen');
     Route::post('/final_allocation/{game}', 'ModController@autoAllocate');
-    Route::get('/add_test_players/{game_id}', 'PlayerController@addTestPlayers');
+    if (ENV('APP_DEBUG')) {
+        Route::get('/add_test_players/{game_id}', 'PlayerController@addTestPlayers');
+        Route::get('/add_test_players/{game_id}/{number}', 'PlayerController@addTestPlayersV2');
+    }
 });
 
 Route::get('/join', 'PlayerController@join');
