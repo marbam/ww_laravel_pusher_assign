@@ -16,7 +16,7 @@ class CheckApproved
     public function handle($request, Closure $next)
     {
         $user = auth()->user();
-        if ($user && !$user->approved) {
+        if (!$user || !$user->approved) {
             return redirect('/');
         }
 
