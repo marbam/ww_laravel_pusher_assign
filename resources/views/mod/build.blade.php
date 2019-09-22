@@ -51,17 +51,21 @@
 
         $( document ).ready(function() {
 
-            $('.not-in').click( function () {
+            $('.not-in').click( function () { //faction which is not in
                 $(this).toggleClass('btn-warning');
                 $(this).toggleClass('btn-default');
-                var id = $(this).data('show_players');
+                var role_id = $(this).data('show_players');
                 if ($(this).hasClass('btn-warning')) {
                     $(this).text('Maybe In');
-                    sendUpdate('add', id);
+                    sendUpdate('add', role_id, null, null, false); // add faction
                 } else {
                     $(this).text('Out');
-                    $('#'+id).removeClass('btn-success').text('Out');
-                    sendUpdate('remove', id, 'remove', id);
+                    var updateCount = false;
+                    if ($('#'+role_id).hasClass('btn-success')) {
+                        $('#'+role_id).removeClass('btn-success').text('Out');
+                        updateCount = true;
+                    }
+                    sendUpdate('remove', role_id, 'remove', role_id, updateCount); // remove faction and role
                 }
 
             });
@@ -72,14 +76,14 @@
                 $(this).toggleClass('role-in');
                 $(this).toggleClass('btn-success');
 
-                var id = $(this).attr('id');
+                var role_id = $(this).attr('id');
                 if ($(this).hasClass('role-in')) {
                     $(this).text("In");
-                    $("[data-show_players='"+id+"']").text('Maybe In').addClass('btn-warning');
-                    sendUpdate('add', id, 'add', id);
+                    $("[data-show_players='"+role_id+"']").text('Maybe In').addClass('btn-warning');
+                    sendUpdate('add', role_id, 'add', role_id, true); // add faction and role
                 } else {
                     $(this).text("Out");
-                    sendUpdate(null, null, 'remove', id);
+                    sendUpdate(null, null, 'remove', role_id, true); // remove faction and role
                 }
 
             });
@@ -97,7 +101,7 @@
         });
 
 
-        function sendUpdate(announceState = null, announceId = null, roleState = null, roleId = null ) {
+        function sendUpdate(announceState = null, announceId = null, roleState = null, roleId = null, changeCount = false) {
             $.ajax({
               method: "POST",
               url: "/mod_update/{{$id}}",
@@ -110,15 +114,17 @@
                 }
             })
             .done(function(data) {
-                let button = $('#proceed_button');
-                let count = button.data('roles');
-                if (announceState == 'add') {
-                    count = count + 1;
-                } else {
-                    count = count - 1;
+                if (changeCount) {
+                    let button = $('#proceed_button');
+                    let count = button.data('roles');
+                    if (announceState == 'add') {
+                        count = count + 1;
+                    } else {
+                        count = count - 1;
+                    }
+                    button.data('roles', count);
+                    $('#role_count').html(count);
                 }
-                button.data('roles', count);
-                $('#role_count').html(count);
             });
         }
 

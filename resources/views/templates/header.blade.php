@@ -18,6 +18,10 @@
                     @auth
                         <a href="/">Home</a>
                         <a href="/games">Games Listing</a>
+                        @if(Auth::User()->approved)
+                            <a href="/users">Users</a>
+                        @endif
+                        <a href="{{ url('/logout') }}">Logout</a>
                     @endauth
                 </div>
             </div>

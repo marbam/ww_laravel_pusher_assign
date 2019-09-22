@@ -88,6 +88,19 @@ class PlayerController extends Controller
         }
     }
 
+    public function addTestPlayersV2($gameId, $numberToAdd)
+    {
+        for ($add = 0; $add < $numberToAdd; $add++) {
+            $player = Player::create([
+                'game_id' => $gameId,
+                'name' => "Player ".rand(1, 100000),
+                'listing_order' => $add
+            ]);
+
+            PlayerCreated::dispatch($player, $gameId);
+        }
+    }
+
     public function resetPlayer()
     {
         Session::forget('game_id');

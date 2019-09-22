@@ -14,7 +14,7 @@
         <div class="container">
             <div class="jumbotron text-center">
                 <h1 class="jumbotron-heading">You're in the game!</h1>
-                <p class="lead text-muted">Your moderator is building your game! Any non 1-moon roles will appear as they are added to the game. When the gane's ready. We'll give you your role when the game's ready!</p>
+                <p class="lead text-muted">Your moderator is building your game! Any non 1-moon roles will appear as they are added to the game. We'll give you your role when the game's ready!</p>
                 <div class="progress" style="">
                   <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
                 </div>
