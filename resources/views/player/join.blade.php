@@ -11,12 +11,18 @@
 
         <form action="/join_game" method="POST">
             {{csrf_field()}}
-            <label for="name">Your name:</label>
-            <input type="text" name="name"></input>
+            <div style="display:inline-block">
+                <label for="name">Your name:</label>
+                <input type="text" name="name"></input>
+            </div>
 
-            <label for="code">Game code:</label>
-            <input type="text" name="code"></input>
-            <button type="submit" class="btn btn-success my-2">Submit</button>
+            <div style="display:inline-block">
+                <label for="code">Game code:</label>
+                <input type="text" name="code"></input>
+            </div>
+            <br>
+
+                <button type="submit" class="btn btn-success btn-block my-2">Submit</button>
         </form>
 
         @if ($errors->any())
