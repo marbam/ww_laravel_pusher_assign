@@ -218,4 +218,25 @@ class ModController extends Controller
         $data['roles'] = Role::with('faction')->get();
         return view('mod.player_list', ['data' => $data]);
     }
+
+    public function addNoPhone(Request $request, Game $game)
+    {
+        if (!$request->name) {
+            return back();
+        }
+
+        $nextOrder = Player::where('game_id', $game->id)->max('listing_order');
+        if(!$nextOrder) {
+            $nextOrder = 0;
+        }
+
+        Player::create([
+            'name' => $request->name,
+            'game_id' => $game->id,
+            'listing_order' => $nextOrder++
+        ]);
+
+        return redirect('/game/'.$game->id);
+
+    }
 }
