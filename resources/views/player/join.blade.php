@@ -22,7 +22,7 @@
             </div>
             <br>
 
-                <button type="submit" class="btn btn-success btn-block my-2">Submit</button>
+            <button type="submit" class="btn btn-success btn-block my-2">Submit</button>
         </form>
 
         @if ($errors->any())

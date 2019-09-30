@@ -33,6 +33,7 @@ Route::middleware(['approved'])->group(function () {
     Route::get('/users', 'UserController@getListing');
     Route::post('/update_users', 'UserController@updateUsers');
     Route::get('/user_delete/{user}', 'UserController@deleteUser');
+    Route::post('/add_phoneless/{game}', 'ModController@addNoPhone');
     if (ENV('APP_DEBUG')) {
         Route::get('/add_test_players/{game_id}', 'PlayerController@addTestPlayers');
         Route::get('/add_test_players/{game_id}/{number}', 'PlayerController@addTestPlayersV2');
