@@ -47,4 +47,9 @@ class UserController extends Controller
         $user->forceDelete();
         return redirect('users');
     }
+
+    public function awaitingApproval()
+    {
+        return view('users.await');
+    }
 }
