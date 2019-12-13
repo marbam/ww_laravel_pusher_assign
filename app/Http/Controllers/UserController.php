@@ -15,7 +15,7 @@ class UserController extends Controller
             'name',
             'can_approve',
             'approved'
-        ]);
+        ])->where('id', '>', '1');
 
         $user  = Auth::User();
 
