@@ -41,6 +41,17 @@
                 <h2>Roles in Game: <span id="role_count">{{$data['alreadyIn']}}</span></h2>
             </div>
             <hr>
+            <div>
+                <h2>Modifiers</h2>
+                <label for="has_modifiers">Are you planning on putting modifiers into this game? (Separate Screen)</label for="has_modifiers">
+                <select class="form-control" id="has_modifiers">
+                    <option value="0">No</option>
+                    <option value="1"
+                    @if ($data["game"]->has_modifiers) selected @endif
+                    >Yes</option>
+                </select>
+            </div>
+            <hr>
             <div class="roles">
                 @include('mod.faction_lists.moon_heading', [
                     'heading' => 'One Moon', 'data' => $data['factions']->where('moons', 1)
@@ -97,10 +108,20 @@
                     $(this).text("Out");
                     sendUpdate(null, null, 'remove', role_id, true); // remove faction and role
                 }
-
             });
-
         });
+
+        $('#has_modifiers').on('change', function() {
+            let has_modifiers = $(this).val();
+            $.ajax({
+              method: "POST",
+              url: "/game_has_modifiers/{{$id}}",
+              data: {
+                "_token": "{{ csrf_token() }}",
+                has_modifiers: has_modifiers
+                }
+            })
+        })
 
         $('#proceed_button').click(function() {
             if ($(this).data('players') == $(this).data('roles')) {
@@ -118,8 +139,8 @@
               method: "POST",
               url: "/mod_update/{{$id}}",
               data: {
-                "_token": "{{ csrf_token() }}", 
-                announceState: announceState, 
+                "_token": "{{ csrf_token() }}",
+                announceState: announceState,
                 announceId: announceId,
                 roleState: roleState,
                 roleId: roleId

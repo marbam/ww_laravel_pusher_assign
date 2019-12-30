@@ -8,6 +8,7 @@ class Game extends Model
 {
     protected $fillable = [
         'code',
-        'moderator_id'
+        'moderator_id',
+        'has_modifiers'
     ];
 }

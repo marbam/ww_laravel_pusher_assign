@@ -28,6 +28,12 @@ Route::middleware(['approved'])->group(function () {
     Route::get('/get_factions/{game}', 'ModController@getGameSetupData');
     Route::post('/mod_update/{game}', 'ModController@updateGame');
     Route::get('/close/{game}', 'ModController@closeGame');
+    // modifiers
+    Route::post('/game_has_modifiers/{game}', 'ModController@permitModifiers');
+    Route::get('/configure_modifiers/{game}', 'ModController@configureModifiers');
+    Route::post('/add_modifier/{game}', 'ModController@addModifier');
+    Route::post('/remove_modifier/{game}', 'ModController@removeModifier');
+    // end modifiers
     Route::get('/allocate/{game}', 'ModController@allocateScreen');
     Route::post('/final_allocation/{game}', 'ModController@autoAllocate');
     Route::get('/users', 'UserController@getListing');

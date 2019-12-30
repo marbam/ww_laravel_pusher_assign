@@ -100,7 +100,7 @@ class ModController extends Controller
             }
         }
 
-        return ['factions' => $factions, 'game_id' => $game->id, 'alreadyIn' => sizeof($alreadyIn)];
+        return ['factions' => $factions, 'game_id' => $game->id, 'alreadyIn' => sizeof($alreadyIn), 'game' => $game];
     }
 
     public function updateGame(Request $request, Game $game) {
@@ -162,11 +162,39 @@ class ModController extends Controller
         }
     }
 
+    public function permitModifiers(Request $request, Game $game)
+    {
+        $game->update(['has_modifiers' => $request->has_modifiers]);
+    }
+
+    public function configureModifiers(Game $game)
+    {
+        return view('mod.modifiers.add_modifiers', ['id' => $game->id]);
+    }
+
     public function closeGame(Game $game)
     {
         $game->closed = 1;
         $game->save();
+        if ($game->has_modifiers) {
+            return redirect('/configure_modifiers/'.$game->id);
+        }
         return redirect('/allocate/'.$game->id);
+    }
+
+    public function addModifier(Request $request, Game $game)
+    {
+        $added = \App\GameModifier::create([
+            'game_id' => $game->id,
+            'modifier_id' => $request->modifier_id
+        ]);
+
+        return $added->id;
+    }
+
+    public function removeModifier(Request $request, Game $game)
+    {
+        \App\GameModifier::where('id', $request->id)->delete();
     }
 
     public function allocateScreen(Game $game)
