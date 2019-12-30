@@ -9,6 +9,8 @@ use App\Maybe;
 use App\Player;
 use App\Faction;
 use App\Position;
+use App\Modifier;
+use App\GameModifier;
 use Carbon\Carbon;
 use App\Events\GameUpdated;
 use Illuminate\Http\Request;
@@ -184,7 +186,7 @@ class ModController extends Controller
 
     public function addModifier(Request $request, Game $game)
     {
-        $added = \App\GameModifier::create([
+        $added = GameModifier::create([
             'game_id' => $game->id,
             'modifier_id' => $request->modifier_id
         ]);
@@ -195,6 +197,25 @@ class ModController extends Controller
     public function removeModifier(Request $request, Game $game)
     {
         \App\GameModifier::where('id', $request->id)->delete();
+    }
+
+
+    public function applyModifiers(Game $game)
+    {
+        $modifiers = GameModifier::where('game_id', $game->id)
+                                 ->join('modifiers', 'game_modifiers.modifier_id', '=', 'modifiers.id')
+                                 ->get([
+                                     'game_modifiers.id',
+                                     'game_modifiers.modifier_id',
+                                     'modifiers.name',
+                                 ]);
+        $positions = Position::where('game_id', $game->id)->pluck('id');
+        return view('mod.modifiers.apply_modifiers', ['id' => $game->id, 'modifiers' => $modifiers, 'positions' => $positions]);
+    }
+
+    public function returnModifierPartial(Position $position)
+    {
+        return view('mod.modifiers.role', ['id' => $position->id]);
     }
 
     public function allocateScreen(Game $game)

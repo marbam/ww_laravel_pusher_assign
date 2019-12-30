@@ -33,6 +33,10 @@ Route::middleware(['approved'])->group(function () {
     Route::get('/configure_modifiers/{game}', 'ModController@configureModifiers');
     Route::post('/add_modifier/{game}', 'ModController@addModifier');
     Route::post('/remove_modifier/{game}', 'ModController@removeModifier');
+    Route::get('/apply_modifiers/{game}', 'ModController@applyModifiers');
+    Route::post('/get_role_div/{position}', 'ModController@returnModifierPartial');
+
+
     // end modifiers
     Route::get('/allocate/{game}', 'ModController@allocateScreen');
     Route::post('/final_allocation/{game}', 'ModController@autoAllocate');

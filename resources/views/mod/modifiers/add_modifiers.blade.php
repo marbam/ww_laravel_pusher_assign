@@ -16,7 +16,7 @@
                      ->get([
                         'game_modifiers.id',
                         'modifier_id',
-                        'name'                     
+                        'name'
                      ]);
     @endphp
     <div>
@@ -33,7 +33,7 @@
                         }
                     }
                 @endphp
-                <button class="btn btn-primary" 
+                <button class="btn btn-primary"
                     @if(!$visible)
                         style="display:none;"
                     @endif
@@ -52,10 +52,15 @@
         <h3>Modifiers Selected (click to remove)</h3>
         <div class="modifiersInGame">
         @foreach($inGame as $mod)
-            <button class="btn btn-primary" data-modifier_id="{{$mod->modifier_id}}" data-id="{{$mod->id}}" type="button" onclick="removeModifier(this)">{{$mod->name}}</button>
+            <button class="btn btn-primary"
+                    data-modifier_id="{{$mod->modifier_id}}"
+                    data-id="{{$mod->id}}" type="button"
+                    onclick="removeModifier(this)">{{$mod->name}}</button>
         @endforeach
         </div>
     </div>
+    <hr>
+    <button id="submit" class="btn btn-block btn-success" type="button">Assign to Roles!</button>
 </div>
 
 <script>
@@ -71,7 +76,7 @@
             method: "POST",
             url: "/add_modifier/{{$id}}",
             data: {
-                "_token": "{{ csrf_token() }}", 
+                "_token": "{{ csrf_token() }}",
                 modifier_id: modifier_id
             },
             success: function(data) {
@@ -102,7 +107,7 @@
             method: "POST",
             url: "/remove_modifier/{{$id}}",
             data: {
-                "_token": "{{ csrf_token() }}", 
+                "_token": "{{ csrf_token() }}",
                 id: id
             },
             success: function(data) {
@@ -114,6 +119,12 @@
             }
         });
     }
+
+    $('#submit').on('click', function() {
+        if (confirm("Are you sure you're done?")) {
+            window.location.href = '/apply_modifiers/{{$id}}';
+        }
+    })
 </script>
 
 
