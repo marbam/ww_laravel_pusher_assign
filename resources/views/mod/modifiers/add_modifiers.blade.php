@@ -11,6 +11,7 @@
     @php
         $allModifiers = \App\Modifier::orderBy('is_experimental')->orderBy('name')->get();
         $inGame =  DB::table('game_modifiers')
+                     ->where('game_id', $id)
                      ->join('modifiers', 'game_modifiers.modifier_id', '=', 'modifiers.id')
                      ->orderBy('game_modifiers.id')
                      ->get([

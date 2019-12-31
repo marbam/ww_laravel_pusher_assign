@@ -203,6 +203,7 @@ class ModController extends Controller
     {
         $modifiers = GameModifier::where('game_id', $game->id)
                                  ->join('modifiers', 'game_modifiers.modifier_id', '=', 'modifiers.id')
+                                 ->orderBy('id')
                                  ->get([
                                      'game_modifiers.id',
                                      'game_modifiers.modifier_id',
