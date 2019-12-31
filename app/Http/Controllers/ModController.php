@@ -196,9 +196,8 @@ class ModController extends Controller
 
     public function removeModifier(Request $request, Game $game)
     {
-        \App\GameModifier::where('id', $request->id)->delete();
+        GameModifier::where('id', $request->id)->delete();
     }
-
 
     public function applyModifiers(Game $game)
     {
@@ -208,6 +207,7 @@ class ModController extends Controller
                                      'game_modifiers.id',
                                      'game_modifiers.modifier_id',
                                      'modifiers.name',
+                                     'game_modifiers.position_id'
                                  ]);
         $positions = Position::where('game_id', $game->id)->pluck('id');
         return view('mod.modifiers.apply_modifiers', ['id' => $game->id, 'modifiers' => $modifiers, 'positions' => $positions]);
@@ -215,8 +215,21 @@ class ModController extends Controller
 
     public function returnModifierPartial(Position $position)
     {
-        return view('mod.modifiers.role', ['id' => $position->id]);
+        return view('mod.modifiers.role', ['position_id' => $position->id, 'id' => $position->game_id]);
     }
+
+    public function allocateModifier(Request $request, Game $game)
+    {
+        $modifier = GameModifier::find($request->modifier_id);
+        $modifier->update(['position_id' => $request->positionId]);
+    }
+
+    public function deAllocateModifier(Request $request, Game $game)
+    {
+        $modifier = GameModifier::find($request->modifier_id);
+        $modifier->update(['position_id' => null]);
+    }
+
 
     public function allocateScreen(Game $game)
     {

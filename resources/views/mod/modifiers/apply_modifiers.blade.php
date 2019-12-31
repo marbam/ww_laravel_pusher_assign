@@ -9,15 +9,22 @@
 	</div>
     <div>
         <h3>Selected Modifiers</h3>
-        @foreach($modifiers as $mod)
-            <button type="button" class="btn btn-primary" data-id="{{$mod->id}}" onclick="addRole(this)">{{$mod->name}}</button>
-        @endforeach
+        <div id="available">
+            @foreach($modifiers as $mod)
+                <button type="button" class="btn btn-primary"
+                    data-id="{{$mod->id}}" onclick="allocate(this)"
+                @if($mod->position_id)
+                    style="display:none"
+                @endif
+                >{{$mod->name}}</button>
+            @endforeach
+        </div>
         <hr>
         <button class="btn btn-success" type="button" id="previous">Previous</button>
         <button class="btn btn-success" type="button" id="next">Next</button><br><br>
 
         <div id="role_here">
-            @include('mod.modifiers.role', ['id' => $positions[0]])
+            @include('mod.modifiers.role', ['position_id' => $positions[0]])
         </div>
     </div>
 </div>
@@ -26,10 +33,46 @@
 
     let positionIds = {{$positions}};
 
-    function addRole(clickedButton) {
+    function allocate(clickedButton) {
         let button = $(clickedButton);
-        $('.roles_in').append(`<button type="button" class="btn btn-primary">`+button.text()+`</button>`);
-        button.hide();
+        let modifier_id = button.attr('data-id');
+        $.ajax({
+            method: "POST",
+            url: "/allocate_modifier/{{$id}}",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                modifier_id: modifier_id,
+                positionId: $("#currentPosition").attr('data-position_id')
+            },
+            success: function(data) {
+                $('.roles_in').append(`<button type="button" class="btn btn-primary" onclick="deallocate(this)" data-modifier_id="`+modifier_id+`">`+button.text()+`</button>`);
+                button.hide();
+            },
+            error: function(data) {
+                alert('Something went wrong :(');
+            }
+        })
+    }
+
+    function deallocate(clickedButton) {
+        let button = $(clickedButton);
+        let modifier_id = button.attr('data-modifier_id');
+        $.ajax({
+            method: "POST",
+            url: "/deallocate_modifier/{{$id}}",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                modifier_id: modifier_id,
+                positionId: $("#currentPosition").attr('data-position_id')
+            },
+            success: function(data) {
+                $('#available .btn[data-id="'+modifier_id+'"]').css('display', 'inline-block');
+                button.remove();
+            },
+            error: function(data) {
+                alert('Something went wrong :(');
+            }
+        })
     }
 
     $('#previous').on('click', function() {
@@ -75,5 +118,6 @@
             }
         });
     }
+
 </script>
 @endsection
