@@ -16,8 +16,26 @@
 			@endif
 
 			<h4>You are @if(!$player->role->mystic) *NOT* a @endif Mystic</h4>
-			<h4>You show as @if(!$player->role->corrupt) Non- @endif Corrupt</h4>
+			<h4>You show as @if(!$player->role->corrupt && !$player->overridden_corrupt) Non- @endif Corrupt</h4>
 
+			@if($player->game->has_modifiers)
+				<hr>
+				<h3>Modifier Details</h3>
+				@if($modifiers->count())
+					<ul>
+						@foreach($modifiers as $modifier)
+							<li>{{$modifier->name}}</li>
+						@endforeach
+					</ul>
+				@else
+					<p>No Modifiers</p>
+				@endif
+				@if($player->notes_from_mod)
+					<h4>Notes from mod:</h4>
+					<p>{{$player->notes_from_mod}}
+				@endif
+			@endif
+			<hr>
 			<button class="btn btn-success my-2" id="go-home">Back to Home Page!</button>
 		</div>
     </div>

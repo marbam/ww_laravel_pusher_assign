@@ -7,6 +7,9 @@
 				<tr>
 					<th>Player Name</th>
 					<th>Role</th>
+					@if($data['game']->has_modifiers)
+						<th>Modifiers</th>
+					@endif
 					<th>Corrupt</th>
 					<th>Mystic</th>
 				</tr>
@@ -19,7 +22,14 @@
 							$allocatedRole = $data['roles']->find($player->allocated_role_id);
 						@endphp
 						<td>{{$allocatedRole->name}}</td>
-						@if($allocatedRole->corrupt)
+						@if($data['game']->has_modifiers)
+							<td>
+								@foreach($data['modifiers']->where('player_id', $player->id) as $modifier)
+									{{$modifier->name}}<br>
+								@endforeach
+							</td>
+						@endif
+						@if($allocatedRole->corrupt || $player->overridden_corrupt)
 							<td>&#10004;</td>
 						@else
 							<td></td>

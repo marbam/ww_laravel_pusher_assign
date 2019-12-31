@@ -26,6 +26,8 @@
         <div id="role_here">
             @include('mod.modifiers.role', ['position_id' => $positions[0]])
         </div>
+        <hr>
+        <button class="btn btn-primary btn-block" id="submit">Click here when you're finished!</button>
     </div>
 </div>
 
@@ -118,6 +120,28 @@
             }
         });
     }
+
+    function save_notes()
+    {
+        $.ajax({
+            method: "POST",
+            url: "/save_mod_notes/",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                notes: $('.notes_from_mod').val(),
+                positionId: $("#currentPosition").attr('data-position_id')
+            },
+            error: function(data) {
+                alert("Couldn't save :(");
+            }
+        });
+    }
+
+    $('#submit').on('click', function() {
+        if (confirm("Are you sure you've allocated everything?")) {
+            window.location.href = '/allocate/{{$id}}';
+        }
+    })
 
 </script>
 @endsection

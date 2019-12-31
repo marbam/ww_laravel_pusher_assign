@@ -9,6 +9,7 @@ class Position extends Model
     protected $fillable = [
         'game_id',
         'role_id',
-        'allocated'
+        'allocated',
+        'notes_from_mod'
     ];
 }

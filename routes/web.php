@@ -37,7 +37,7 @@ Route::middleware(['approved'])->group(function () {
     Route::post('/get_role_div/{position}', 'ModController@returnModifierPartial');
     Route::post('/allocate_modifier/{game}', 'ModController@allocateModifier');
     Route::post('/deallocate_modifier/{game}', 'ModController@deAllocateModifier');
-
+    Route::post('/save_mod_notes', 'ModController@saveNotes');
     // end modifiers
     Route::get('/allocate/{game}', 'ModController@allocateScreen');
     Route::post('/final_allocation/{game}', 'ModController@autoAllocate');

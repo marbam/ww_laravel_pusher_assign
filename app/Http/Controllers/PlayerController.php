@@ -7,6 +7,7 @@ use Session;
 use App\Game;
 use App\Maybe;
 use App\Player;
+use App\GameModifier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Events\PlayerCreated;
@@ -48,7 +49,7 @@ class PlayerController extends Controller
         return redirect('/room/'.$game->id);
     }
 
-    public function waiting(Game $game) 
+    public function waiting(Game $game)
     {
         if (is_null(session('game_id')) || session('game_id') != $game->id) {
             abort(403);
@@ -57,7 +58,7 @@ class PlayerController extends Controller
         return view('player.waiting_room', ['game_id' => $game->id]);
     }
 
-    public function getFactions(Game $game) 
+    public function getFactions(Game $game)
     {
         $factions[] = "One Moon";
         $temp = Maybe::where('game_id', $game->id)
@@ -68,13 +69,18 @@ class PlayerController extends Controller
         return array_merge($factions, $temp);
     }
 
-    public function roleReveal() 
+    public function roleReveal()
     {
-        $player = Player::with(['role', 'role.faction'])->find(session('player_id'));
-        return view('player.role_reveal', ['player' => $player]);
+        $player = Player::with(['role', 'role.faction', 'game'])->find(session('player_id'));
+        $modifiers = GameModifier::where('player_id', $player->id)
+                                  ->join('modifiers', 'game_modifiers.modifier_id', '=', 'modifiers.id')
+                                ->get([
+                                    'modifiers.name'
+                                ]);
+        return view('player.role_reveal', ['player' => $player, 'modifiers' => $modifiers]);
     }
 
-    public function addTestPlayers($gameId) 
+    public function addTestPlayers($gameId)
     {
         $playerNames = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,];
         foreach ($playerNames as $name) {

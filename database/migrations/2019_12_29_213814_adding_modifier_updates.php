@@ -28,7 +28,7 @@ class AddingModifierUpdates extends Migration
             $table->bigIncrements('id');
             $table->string('name', 100);
             $table->boolean('is_corrupt')->nullable();
-            $table->boolean('is_mystic')->nullable();                        
+            $table->boolean('is_mystic')->nullable();
             $table->unsignedBigInteger('faction_id')->nullable();
             $table->foreign('faction_id')->references('id')->on('factions');
             $table->string('description', 200)->nullable();
@@ -42,12 +42,16 @@ class AddingModifierUpdates extends Migration
             $table->unsignedBigInteger('game_id');
             $table->foreign('game_id')->references('id')->on('games');
             $table->unsignedBigInteger('modifier_id')->nullable();
-            $table->foreign('modifier_id')->references('id')->on('modifiers');                        
+            $table->foreign('modifier_id')->references('id')->on('modifiers');
             $table->unsignedBigInteger('position_id')->nullable();
             $table->foreign('position_id')->references('id')->on('positions');
             $table->unsignedBigInteger('player_id')->nullable();
             $table->foreign('player_id')->references('id')->on('players');
             $table->timestamps();
+        });
+
+        Schema::table('positions', function (Blueprint $table) {
+            $table->text('notes_from_mod')->nullable();
         });
     }
 
@@ -58,6 +62,11 @@ class AddingModifierUpdates extends Migration
      */
     public function down()
     {
+
+        Schema::table('positions', function (Blueprint $table) {
+            $table->dropColumn('notes_from_mod');
+        });
+
         Schema::table('game_modifiers', function (Blueprint $table) {
             $table->dropForeign(['game_id']);
             $table->dropColumn('game_id');
@@ -68,9 +77,9 @@ class AddingModifierUpdates extends Migration
             $table->dropForeign(['player_id']);
             $table->dropColumn('player_id');
         });
-        
+
         Schema::dropIfExists('modifiers');
-        
+
         Schema::table('games', function($table) {
             $table->dropColumn('has_modifiers');
         });

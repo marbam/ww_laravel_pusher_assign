@@ -231,6 +231,13 @@ class ModController extends Controller
         $modifier->update(['position_id' => null]);
     }
 
+    public function saveNotes(Request $request) {
+        $position = Position::find($request->positionId);
+        $position->update([
+            'notes_from_mod' => $request->notes
+        ]);
+    }
+
 
     public function allocateScreen(Game $game)
     {
@@ -261,6 +268,38 @@ class ModController extends Controller
                 $players = $players->where('allocated_role_id', '=', null);
                 $player = $players->random();
 
+                if ($game->has_modifiers) {
+                    // get any modifiers associated with the position
+                    $modifiers = GameModifier::where('position_id', $position->id)
+                                             ->join('modifiers', 'game_modifiers.modifier_id', '=', 'modifiers.id')
+                                             ->get([
+                                                 'game_modifiers.id',
+                                                 'player_id',
+                                                 'modifier_id',
+                                                 'is_corrupt',
+                                                 'faction_id'
+                                             ]);
+                    foreach ($modifiers as $modifier) {
+                        $modifier->update([
+                            'player_id' => $player->id
+                        ]);
+
+                        // override any corruptions or factions
+                        if ($modifier->is_corrupt) {
+                            $player->overridden_corrupt = 1;
+                        }
+                        if ($modifier->faction_id) {
+                            $player->overridden_faction_id = $modifier->faction_id;
+                        }
+                    }
+
+                    // add any position notes to the player record
+                    if ($position->notes_from_mod) {
+                        $player->notes_from_mod = $position->notes_from_mod;
+                    }
+
+                }
+
                 // allocate the role to the player, save player record
                 $player->allocated_role_id = $position->role_id;
                 $player->listing_order = $updatedOrders[$player->id];
@@ -276,9 +315,18 @@ class ModController extends Controller
         GameUpdated::dispatch('ready', null, $game->id);
 
         // show a listing of all the players and their allocated role to the mod to finish up.
-        $data['players'] = Player::where('game_id', $game->id)->orderBy('listing_order')->get();
+        $data['players'] = Player::where('game_id', $game->id)
+                                 ->orderBy('listing_order')->get();
+
+        $data['modifiers'] = GameModifier::where('game_id', $game->id)
+                                 ->join('modifiers', 'game_modifiers.modifier_id', '=', 'modifiers.id')
+                                 ->get([
+                                     'player_id',
+                                     'name'
+                                 ]);
 
         $data['roles'] = Role::with('faction')->get();
+        $data['game'] = $game;
         return view('mod.player_list', ['data' => $data]);
     }
 
