@@ -21,8 +21,10 @@ class ModController extends Controller
         Position::truncate();
         Maybe::truncate();
         Player::truncate();
-        Game::truncate();
-        dd("Wiped!");
+        foreach(Game::all() as $game) {
+            $game->delete();
+        }
+        dd("Wiped all games!");
     }
 
     public function gamesList()
