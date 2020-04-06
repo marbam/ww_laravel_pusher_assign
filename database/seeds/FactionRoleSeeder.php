@@ -86,14 +86,14 @@ class FactionRoleSeeder extends Seeder
         $roles[] = ['name' => 'Guard', 'faction' => "Village", 'announced_faction' => "Criminals", 'moons' => 2, 'r_order' => 34];
         $roles[] = ['name' => 'Guard', 'faction' => "Village", 'announced_faction' => "Criminals", 'moons' => 2, 'r_order' => 35];
 
-        $roles[] = ['name' => 'Juliet', 'faction' => "Lovers", 'announced_faction' => "Juliet", 'r_order' => 36];
-        $roles[] = ['name' => 'Guardian Angel', 'faction' => "Lovers", 'announced_faction' => "Guardian Angel", 'r_order' => 37];
+        $roles[] = ['name' => 'Juliet', 'faction' => "Lovers", 'announced_faction' => "Lovers", 'r_order' => 36];
+        $roles[] = ['name' => 'Guardian Angel', 'faction' => "Lovers", 'announced_faction' => "Lovers", 'r_order' => 37];
 
         $roles[] = ['name' => 'Pestilent', 'faction' => "Village", 'announced_faction' => "Pestilent", 'moons' => 3, 'r_order' => 38];
         $roles[] = ['name' => 'Undertaker', 'faction' => "Village", 'announced_faction' => null, 'moons' => 3, 'r_order' => 39];
         $roles[] = ['name' => 'Poacher', 'faction' => "Village", 'announced_faction' => "Poacher", 'moons' => 3, 'r_order' => 39];
         $roles[] = ['name' => 'Vagrant', 'faction' => "Vagrant", 'announced_faction' => "Vagrant", 'moons' => 3, 'r_order' => 39];
-        
+
         $roles[] = ['name' => 'Inquisitor', 'faction' => "Inquisition", 'announced_faction' => "Inquisition", 'r_order' => 39];
         $roles[] = ['name' => 'Executioner', 'faction' => "Inquisition", 'announced_faction' => "Inquisition", 'r_order' => 39, 'corrupt' => 1];
         $roles[] = ['name' => 'Templar', 'faction' => "Inquisition", 'announced_faction' => "Inquisition", 'r_order' => 39];
