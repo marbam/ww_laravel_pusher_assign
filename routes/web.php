@@ -38,6 +38,8 @@ Route::middleware(['approved'])->group(function () {
         Route::get('/add_test_players/{game_id}', 'PlayerController@addTestPlayers');
         Route::get('/add_test_players/{game_id}/{number}', 'PlayerController@addTestPlayersV2');
     }
+    Route::get('/wipe', 'ModController@wipe');
+
 });
 
 Route::get('/join', 'PlayerController@join');
