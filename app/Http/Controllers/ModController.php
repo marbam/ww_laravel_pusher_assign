@@ -18,9 +18,10 @@ class ModController extends Controller
 {
     public function wipe()
     {
-        Position::delete();
-        Maybe::delete();
-        Game::delete();
+        Position::truncate();
+        Maybe::truncate();
+        Player::truncate();
+        Game::truncate();
         dd("Wiped!");
     }
 
