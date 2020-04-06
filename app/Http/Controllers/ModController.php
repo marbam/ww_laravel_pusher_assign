@@ -18,9 +18,9 @@ class ModController extends Controller
 {
     public function wipe()
     {
-        Position::where('created_at', '<', $twentyFourHours)->delete();
-        Maybe::where('created_at', '<', $twentyFourHours)->delete();
-        Game::where('created_at', '<', $twentyFourHours)->delete();
+        Position::delete();
+        Maybe::delete();
+        Game::delete();
         dd("Wiped!");
     }
 
