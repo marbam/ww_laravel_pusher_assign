@@ -16,6 +16,7 @@ use App\Http\Requests\NewGameRequest;
 
 class ModController extends Controller
 {
+
     public function gamesList()
     {
         $twentyFourHours = Carbon::now()->subHours(24);
@@ -23,7 +24,11 @@ class ModController extends Controller
         Maybe::where('created_at', '<', $twentyFourHours)->delete();
         Game::where('created_at', '<', $twentyFourHours)->delete();
 
-        $games = Game::where('moderator_id', Auth::id())
+        $user = Auth::User();
+
+        $games = Game::when($user->id != 1, function($query) {
+                        $query->where('moderator_id', $user->id);
+                     })
                      ->orderBy('created_at', 'DESC')
                      ->get();
 
