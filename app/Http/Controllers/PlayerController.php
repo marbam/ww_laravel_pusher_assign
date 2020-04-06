@@ -48,7 +48,7 @@ class PlayerController extends Controller
         return redirect('/room/'.$game->id);
     }
 
-    public function waiting(Game $game) 
+    public function waiting(Game $game)
     {
         if (is_null(session('game_id')) || session('game_id') != $game->id) {
             abort(403);
@@ -57,24 +57,26 @@ class PlayerController extends Controller
         return view('player.waiting_room', ['game_id' => $game->id]);
     }
 
-    public function getFactions(Game $game) 
+    public function getFactions(Game $game)
     {
-        $factions[] = "One Moon";
-        $temp = Maybe::where('game_id', $game->id)
+        $dummy[] = "One Moon";
+        $theRest = Maybe::where('game_id', $game->id)
                        ->join('factions', 'maybes.faction_id', '=', 'factions.id')
+                       ->groupBy('maybes.faction_id')
+                       ->orderBy('maybes.faction_id')
                        ->pluck('factions.name')
                        ->toArray();
 
-        return array_merge($factions, $temp);
+        return array_merge($dummy, $theRest);
     }
 
-    public function roleReveal() 
+    public function roleReveal()
     {
         $player = Player::with(['role', 'role.faction'])->find(session('player_id'));
         return view('player.role_reveal', ['player' => $player]);
     }
 
-    public function addTestPlayers($gameId) 
+    public function addTestPlayers($gameId)
     {
         $playerNames = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,];
         foreach ($playerNames as $name) {
