@@ -16,6 +16,13 @@ use App\Http\Requests\NewGameRequest;
 
 class ModController extends Controller
 {
+    public function wipe()
+    {
+        Position::where('created_at', '<', $twentyFourHours)->delete();
+        Maybe::where('created_at', '<', $twentyFourHours)->delete();
+        Game::where('created_at', '<', $twentyFourHours)->delete();
+        dd("Wiped!");
+    }
 
     public function gamesList()
     {
